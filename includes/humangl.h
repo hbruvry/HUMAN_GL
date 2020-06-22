@@ -15,6 +15,7 @@
 
 # include <GL/glew.h>
 # include <GLFW/glfw3.h>
+# include <stdint.h>
 # include "lib/libft/libft.h"
 # include "lib/libmath/libmath.h"
 
@@ -47,6 +48,21 @@ typedef struct	s_ogl
 	GLuint		uvbuffer;
 	GLuint		elementbuffer;
 }				t_ogl;
+
+typedef struct	s_bone
+{
+	char		*name;
+	t_vec3		vpos;
+	float		angle;
+	float		length;
+	uint8_t		flags;
+	uint8_t		childcount;
+}				t_bone;
+
+typedef	struct	s_human
+{
+	t_list		*lleftarm;
+}				t_human;
 
 typedef struct	s_cam
 {
@@ -111,6 +127,6 @@ void			ft_scrollcallback(GLFWwindow *window, double offsetx, double offsety);
 void			ft_processinput(GLFWwindow *window);
 void			ft_updatecamera(t_cam *cam);
 void			ft_setpvmmatrices(t_cam cam, GLuint *shaderprogramid);
-void			ft_drawscop(t_ogl *o, t_env *e);
+void			ft_drawhuman(t_ogl *o, t_env *e);
 
 #endif

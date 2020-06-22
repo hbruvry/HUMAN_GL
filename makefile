@@ -30,7 +30,7 @@ SRCS =		sources/main.c \
 			sources/ft_mousecallback.c \
 			sources/ft_scrollcallback.c \
 			sources/ft_processinput.c \
-			sources/ft_drawscop.c \
+			sources/ft_drawhuman.c \
 
 OBJS =		$(SRCS:.c=.o)
 

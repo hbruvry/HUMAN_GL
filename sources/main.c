@@ -143,7 +143,7 @@ int			main(int argc, char **argv)
 	setopenglenvironement(argv[1], o, e);
 	while (glfwGetKey(o->window, GLFW_KEY_ESCAPE) != GLFW_PRESS
 			&& !glfwWindowShouldClose(o->window))
-		ft_drawscop(o, e);
+		ft_drawhuman(o, e);
 	glDeleteVertexArrays(1, &(o->vertexarrayid));
 	glDeleteBuffers(1, &(o->vertexbuffer));
 	glDeleteProgram(o->shaderprogramid);

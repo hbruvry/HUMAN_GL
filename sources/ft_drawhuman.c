@@ -43,7 +43,7 @@ void	ft_drawvertexbuffer(int fcount)
 ** TODO
 */
 
-void	ft_drawscop(t_ogl *o, t_env *e)
+void	ft_drawhuman(t_ogl *o, t_env *e)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	ft_processinput(o->window);
