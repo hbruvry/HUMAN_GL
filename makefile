@@ -1,4 +1,4 @@
-NAME = scop
+NAME = humangl
 
 GLFW_LOC =	$(shell brew --prefix glfw)
 GLFW_INC =	$(GLFW_LOC)/include
@@ -48,7 +48,7 @@ $(NAME): $(OBJS)
 	@$(MAKE) -C $(LIBFT)
 	@$(MAKE) -C $(LIBMATH)
 	@$(CC) -o $(NAME) $(OBJS) lib/libft/libft.a lib/libmath/libmath.a $(GLFW_LINK) $(GLEW_LINK) -framework OpenGL #-fsanitize=address
-	@printf "$(_GREEN)scop compiled\n$(_END)"
+	@printf "$(_GREEN)humangl compiled\n$(_END)"
 
 clean:
 	@$(MAKE) clean -C $(LIBFT)
@@ -56,13 +56,13 @@ clean:
 	@rm -f $(OBJS)
 	@printf "libft cleaned\n"
 	@printf "libmath cleaned\n"
-	@printf "scop cleaned\n"
+	@printf "humangl cleaned\n"
 
 fclean: clean
 	@$(MAKE) fclean -C $(LIBFT)
 	@$(MAKE) fclean -C $(LIBMATH)
 	@rm -f $(NAME)
-	@printf "scop fcleaned\n"
+	@printf "humangl fcleaned\n"
 
 re: fclean all
 
