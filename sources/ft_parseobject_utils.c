@@ -71,9 +71,9 @@ void		ft_setvertexbufferdata(GLfloat *vertexbufferdata, char *objdata)
 void		ft_setuvbufferdata(GLfloat *uvbufferdata, t_vec3 vertex)
 {
 	vertex = ft_vec3norm(vertex);
-	uvbufferdata[0] = 2.f * (0.5f + atan2(vertex.v[2], vertex.v[0])
-					/ (2 * M_PI)) - 1.f;
-	uvbufferdata[1] = 2.f * (0.5f + asin(vertex.v[1]) / M_PI) - 1.f;
+	uvbufferdata[0] = 0.5f + atan2(vertex.v[0], vertex.v[2])
+					/ (2 * M_PI);
+	uvbufferdata[1] = 0.5f - asin(vertex.v[1]) / M_PI;
 	return ;
 }
 

@@ -41,6 +41,7 @@ t_vec3				ft_vec3norm(t_vec3 vec);
 t_vec3				ft_vec3cross(t_vec3 vdst, t_vec3 vsrc);
 float				ft_vec3dot(t_vec3 vdst, t_vec3 vsrc);
 void				ft_vec3print(t_vec3 vec);
+void				ft_vec3namedprint(char *name, t_vec3 vec);
 void				ft_mat4set(t_mat4 *mat, float f);
 t_mat4				ft_mat4cpy(t_mat4 *mdst, t_mat4 msrc);
 t_mat4				ft_mat4add(t_mat4 mdst, t_mat4 msrc);

@@ -22,6 +22,6 @@ void	ft_mat4print(t_mat4 mat)
 
 	i = -1;
 	while (++i < 16)
-		printf("mat[%d] = %f\n", i, mat.m[i]);
+		printf("mat[%d] = %f;\n", i, mat.m[i]);
 	return ;
 }

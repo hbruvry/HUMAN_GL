@@ -37,7 +37,7 @@ void	ft_setenvironmentobject(t_obj *obj)
 void	ft_setenvironmentcamera(t_cam *cam)
 {
 	cam->vup = ft_vec3set(0.f, 1.f, 0.f);
-	cam->vpos = ft_vec3set(0.f, 0.f, 5.f);
+	cam->vpos = ft_vec3set(0.f, 0.f, 10.f);
 	cam->vfront = ft_vec3set(0.f, 0.f, -1.f);
 	cam->vtarget = ft_vec3set(0.f, 0.f, 0.f);
 	cam->target = false;
@@ -66,6 +66,7 @@ t_env	*ft_getenvironment(void)
 		ft_setenvironmentcamera(&(e->cam));
 		ft_setenvironmentcamera(&(e->camreset));
 		ft_setenvironmentobject(&(e->obj));
+		e->lhuman = NULL;
 		e->time.delta = 0.f;
 		e->time.lastframe = 0.f;
 	}

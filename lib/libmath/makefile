@@ -20,6 +20,7 @@ SRCS =		ft_vec3set.c \
 			ft_vec3dot.c \
 			ft_vec3scalar.c \
 			ft_vec3print.c \
+			ft_vec3namedprint.c \
 			ft_mat4set.c \
 			ft_mat4cpy.c \
 			ft_mat4add.c \

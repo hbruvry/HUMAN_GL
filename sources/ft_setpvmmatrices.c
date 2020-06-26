@@ -64,17 +64,14 @@ t_mat4	ft_setprojectionmat4(float fov, float ratio, float near, float far)
 ** TODO
 */
 
-void	ft_setpvmmatrices(t_cam cam, GLuint *shaderprogramid)
+void	ft_setpvmmatrices(t_cam cam, GLuint *shaderprogramid, t_mat4 mbone)
 {
 	t_mat4	modelmat;
 	t_mat4	viewmat;
 	t_mat4	projectionmat;
 
 	ft_mat4set(&modelmat, IDENTITY);
-	modelmat = ft_mat4transpose(ft_mat4transform(modelmat,
-		ft_vec3set(1.f, 1.f, 1.f),
-		ft_vec3set(0.f, M_PI * 0.5f, 0.f),
-		ft_vec3set(0.f, 0.f, 0.f)));
+	modelmat = ft_mat4transpose(mbone);
 	viewmat = ft_mat4transpose(ft_setlookatmatrix(cam));
 	projectionmat = ft_setprojectionmat4(cam.fov,
 		WIDTH / (float)HEIGHT, NEAR, FAR);

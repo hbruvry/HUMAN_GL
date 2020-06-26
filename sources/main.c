@@ -107,6 +107,7 @@ void		setopenglenvironement(char *path, t_ogl *o, t_env *e)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
+	ft_sethumanlist(&(e->lhuman));
 	ft_setvao(&(o->vertexarrayid));
 	ft_parseobject(path, &(e->obj));
 	ft_setvbo(&(o->vertexbuffer), &(o->normalbuffer),

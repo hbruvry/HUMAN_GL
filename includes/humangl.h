@@ -53,16 +53,13 @@ typedef struct	s_bone
 {
 	char		*name;
 	t_vec3		vpos;
-	float		angle;
-	float		length;
+	t_vec3		vabspos;
+	t_vec3		vrot;
+	t_vec3		vabsrot;
+	t_vec3		vsize;
 	uint8_t		flags;
 	uint8_t		childcount;
 }				t_bone;
-
-typedef	struct	s_human
-{
-	t_list		*lleftarm;
-}				t_human;
 
 typedef struct	s_cam
 {
@@ -107,6 +104,7 @@ typedef struct	s_env
 	t_cam		cam;
 	t_cam		camreset;
 	t_obj		obj;
+	t_list		*lhuman;
 	t_time		time;
 }				t_env;
 
@@ -116,6 +114,9 @@ char			*ft_filecpy(char *path);
 char			**ft_filecpytab(char *path);
 int				ft_setshaderprogram(GLuint *shaderprogramid);
 int				ft_setbmptexture(GLuint *texturebuffer);
+void			ft_lfill(t_list **alst, void const *c, size_t cs);
+void			ft_printhumanlist(t_list *l);
+void			ft_sethumanlist(t_list **lhuman);
 void			ft_translatevertexbufferdata(GLfloat *vertexbufferdata, int vcount, t_vec3 vtrans);
 void			ft_setvertexbufferdata(GLfloat *vertexbufferdata, char *objdata);
 void			ft_setuvbufferdata(GLfloat *uvbufferdata, t_vec3 vertex);
@@ -126,7 +127,7 @@ void			ft_mousecallback(GLFWwindow *window, double posx, double posy);
 void			ft_scrollcallback(GLFWwindow *window, double offsetx, double offsety);
 void			ft_processinput(GLFWwindow *window);
 void			ft_updatecamera(t_cam *cam);
-void			ft_setpvmmatrices(t_cam cam, GLuint *shaderprogramid);
+void			ft_setpvmmatrices(t_cam cam, GLuint *shaderprogramid, t_mat4 bonemat);
 void			ft_drawhuman(t_ogl *o, t_env *e);
 
 #endif
