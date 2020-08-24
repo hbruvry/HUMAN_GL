@@ -77,7 +77,7 @@ void	ft_mat4transupdate(t_mat4 *mat, t_mat4 mlrot, t_bone bone)
 ** TODO
 */
 
-void	ft_mat4boneset(t_mat4 *mat, t_mat4 mlrot, t_mat4 mltrans, t_bone bone)
+void	ft_mat4boneset(t_mat4 *mat, t_mat4 mlrot, t_mat4 mltrans, t_bone *bone)
 {
 	t_vec3	vtrans;
 	t_mat4	mrot;
@@ -85,13 +85,14 @@ void	ft_mat4boneset(t_mat4 *mat, t_mat4 mlrot, t_mat4 mltrans, t_bone bone)
 
 	ft_mat4set(mat, IDENTITY);
 	*mat = ft_mat4transform(*mat,
-		ft_vec3set(bone.vsize.v[0], bone.vsize.v[1], bone.vsize.v[2]),
-		ft_vec3appmat4(bone.vrot, mlrot),
-		ft_vec3appmat4(bone.vpos, mltrans));
-	bone.vabspos = ft_vec3set(-8.f, -8.f, -8.f);
-	vtrans = ft_vec3set(0.f, bone.vsize.v[1] * 0.5f, 0.f);
+		ft_vec3set(bone->vsize.v[0], bone->vsize.v[1], bone->vsize.v[2]),
+		ft_vec3appmat4(bone->vrot, mlrot),
+		ft_vec3appmat4(bone->vpos, mltrans));
+	bone->vabspos = ft_vec3appmat4(bone->vpos, mltrans);
+	vtrans = ft_vec3set(0.f, bone->vsize.v[1] * 0.5f, 0.f);
+	bone->vabsrot = ft_vec3appmat4(bone->vrot, mlrot);
 	ft_mat4set(&mrot, IDENTITY);
-	mrot = ft_mat4rotate(mrot, ft_vec3appmat4(bone.vrot, mlrot));
+	mrot = ft_mat4rotate(mrot, ft_vec3appmat4(bone->vrot, mlrot));
 	vtrans = ft_vec3appmat4(vtrans, mrot);
 	ft_mat4set(&mtrans, IDENTITY);
 	mtrans = ft_mat4translate(mtrans, vtrans);
@@ -114,9 +115,9 @@ void	ft_drawhumanlist(t_ogl *o, t_env *e,
 	{
 		if (ltmp->content_size == sizeof(t_bone))
 		{
-			ft_mat4boneset(&mbone, mlrot, mltrans, *((t_bone*)ltmp->content));
+			ft_mat4boneset(&mbone, mlrot, mltrans, &(*((t_bone*)ltmp->content)));
 			ft_mat4rotupdate(&mlrot, *((t_bone*)ltmp->content));
-			ft_mat4transupdate(&mltrans, mlrot, *((t_bone*)ltmp->content));
+			//ft_mat4transupdate(&mltrans, mlrot, *((t_bone*)ltmp->content));
 			ft_setpvmmatrices(e->cam, &(o->shaderprogramid), mbone);
 			glUseProgram(o->shaderprogramid);
 			glActiveTexture(GL_TEXTURE0);
@@ -149,6 +150,7 @@ void	ft_drawhuman(t_ogl *o, t_env *e)
 	ft_mat4set(&mlrot, IDENTITY);
 	ft_mat4set(&mltrans, IDENTITY);
 	ft_drawhumanlist(o, e, mlrot, mltrans, e->lhuman);
+	ft_printhumanlist(e->lhuman);
 	glfwSwapBuffers(o->window);
 	glfwPollEvents();
 	return ;

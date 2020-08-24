@@ -33,9 +33,14 @@ void	ft_sethumanlist(t_list  **lhuman)
 {
 	t_bone  bone;
 
+	bone = ft_setbone("leftThigh",
+				ft_vec3set(0.f, 0.f, 0.f),
+				ft_vec3set(M_PI * 0.5f, 0.f, 0.f),
+				ft_vec3set(0.5f, 2.f, 0.5f));
+	ft_lfill(lhuman, &bone, sizeof(bone));
 	bone = ft_setbone("torso",
 					ft_vec3set(0.f, 0.f, 0.f),
-					ft_vec3set(0.f, 0.f, 0.f),
+					ft_vec3set(M_PI * 0.5f, 0.f, 0.f),
 					ft_vec3set(1.5f, 3.f, 0.75f));
 	ft_lfill(lhuman, &bone, sizeof(bone));
 	bone = ft_setbone("head",
