@@ -43,82 +43,59 @@ void	ft_drawvertexbuffer(int fcount)
 ** TODO
 */
 
-t_vec3	ft_vec3getbonetranslation(t_vec3 vrot, t_vec3 vpos)
+void	ft_mat4boneset(t_mat4 *mat, t_vec3 *vlrot, t_vec3 *vlpos, t_bone *bone)
 {
-	t_vec3	vcos;
-	t_vec3	vsin;
-	t_vec3	vleft;
-	t_vec3	vup;
-	t_vec3	vforward;
-	t_vec3	vtrans;
-
-	vcos = ft_vec3set(cos(vrot.v[0]), cos(vrot.v[1]), cos(vrot.v[2]));
-	vsin = ft_vec3set(sin(vrot.v[0]), sin(vrot.v[1]), sin(vrot.v[2]));
-	vleft = ft_vec3norm(ft_vec3set(vcos.v[1] * vcos.v[2],
-					vsin.v[0] * vsin.v[1] * vcos.v[2] + vcos.v[0] * vsin.v[2],
-					-vcos.v[0] * vsin.v[1] * vcos.v[2] + vsin.v[0] * vsin.v[2]));
-	vup = ft_vec3norm(ft_vec3set(-vcos.v[1] * vsin.v[2],
-					-vsin.v[0] * vsin.v[1] * vsin.v[2] + vcos.v[0] * vcos.v[2],
-					vcos.v[0] * vsin.v[1] * vsin.v[2] + vsin.v[0] * vcos.v[2]));
-	vforward = ft_vec3norm(ft_vec3set(vsin.v[2],
-					-vsin.v[0] * vcos.v[1],
-					vcos.v[0] * vcos.v[1]));
-	vtrans = ft_vec3cpy(&vtrans, ft_vec3scalar(vleft, vpos.v[0]));
-	vtrans = ft_vec3add(vtrans, ft_vec3scalar(vup, vpos.v[1]));
-	vtrans = ft_vec3add(vtrans, ft_vec3scalar(vforward, vpos.v[2]));
-	return (vtrans);
-}
-
-/*
-** TODO
-*/
-
-t_vec3	ft_vec3getboneoffset(t_vec3 vrot, float height)
-{
-	t_vec3	vcos;
-	t_vec3	vsin;
-	t_vec3	vup;
-	t_vec3	voffset;
-
-	vcos = ft_vec3set(cos(vrot.v[0]), cos(vrot.v[1]), cos(vrot.v[2]));
-	vsin = ft_vec3set(sin(vrot.v[0]), sin(vrot.v[1]), sin(vrot.v[2]));
-	vup = ft_vec3norm(ft_vec3set(-vcos.v[1] * vsin.v[2],
-					-vsin.v[0] * vsin.v[1] * vsin.v[2] + vcos.v[0] * vcos.v[2],
-					vcos.v[0] * vsin.v[1] * vsin.v[2] + vsin.v[0] * vcos.v[2]));
-	voffset = ft_vec3cpy(&voffset, ft_vec3scalar(vup, height));
-	return (voffset);
-}
-
-/*
-** TODO
-*/
-
-t_mat4	ft_mat4boneset(t_vec3 *vlrot, t_vec3 *vlpos, t_bone *bone)
-{
-	t_mat4	mat;
-	t_vec3	vrot;
-	t_vec3	vtrans;
-	t_vec3	voffset;
 	t_vec3	vpos;
+	
+	t_vec3	vtrans;
+	t_mat4	mrot;
+	t_mat4	mflip;
+	t_mat4	mlrot;
 
+	t_vec3	vrot;
+	t_vec3	vup;
+	float	sx, sy, sz;
+	float	cx, cy, cz;
 	vrot = ft_vec3cpy(&vrot, *vlrot);
 	vrot = ft_vec3add(vrot, bone->vrot);
-	vtrans = ft_vec3getbonetranslation(*vlrot, bone->vpos);
-	voffset = ft_vec3getboneoffset(vrot, bone->vsize.v[1] * 0.5f);
+	sx = sin(vrot.v[0]);
+	cx = cos(vrot.v[0]);
+	sy = sin(vrot.v[1]);
+	cy = cos(vrot.v[1]);
+	sz = sin(vrot.v[2]);
+	cz = cos(vrot.v[2]);
+//	vleft = ft_vec3set(cy * cz, sx * sy * cz + cx * sz, -cx * sy * cz + sx * sz);
+	vup = ft_vec3set(-cy * sz, -sx * sy * sz + cx * cz, cx * sy * sz + sx * cz);
+	ft_putendl("\nvup");
+	ft_vec3print(vup);
+//	vforward = ft_vec3set(sy, -sx * cy, cx * cy);
+
+	ft_mat4set(&mrot, IDENTITY);
+	ft_mat4set(&mflip, IDENTITY);
+	ft_mat4set(&mlrot, IDENTITY);
+	mrot = ft_mat4rotate(mrot, ft_vec3add(*vlrot, bone->vrot));
+	mlrot = ft_mat4rotate(mlrot, *vlrot);
+	vtrans = ft_vec3set(-cy*sz, -sx*sy*sz + cx*cz, cx*sy*sz + sx*cz);
+	vtrans = ft_vec3norm(vtrans);
+	vtrans = ft_vec3scalar(vtrans, bone->vsize.v[0] * 0.5f);
+	ft_putendl("\nvtrans");
+	ft_vec3print(vtrans);
 	vpos = ft_vec3cpy(&vpos, *vlpos);
-	vpos = ft_vec3add(vpos, vtrans);
-	vpos = ft_vec3add(vpos, voffset);
-	ft_mat4set(&mat, IDENTITY);
-	mat = ft_mat4transform(mat,
+	vpos = ft_vec3add(vpos, ft_vec3appmat4(bone->vpos, mlrot));
+	ft_mat4set(mat, IDENTITY);
+	*mat = ft_mat4transform(*mat,
 		bone->vsize,
-		vrot,
-		vpos);
-	bone->vabsrot = ft_vec3cpy(&bone->vabsrot, vrot);
-	bone->vabspos = ft_vec3cpy(&bone->vabsrot, vpos);
+		ft_vec3add(*vlrot, bone->vrot),
+		ft_vec3add(vpos, vtrans));
+	bone->vabsrot = ft_vec3cpy(&bone->vabsrot, ft_vec3add(*vlrot, bone->vrot));
+	bone->vabspos = ft_vec3cpy(&bone->vabspos, vpos);
 	*vlrot = ft_vec3add(*vlrot, bone->vrot);
-	*vlpos = ft_vec3add(*vlpos, vtrans);
-	*vlpos = ft_vec3add(*vlpos, ft_vec3scalar(voffset, 2.f));
-	return (mat);
+	*vlpos = ft_vec3add(*vlpos, ft_vec3appmat4(bone->vpos, mlrot));
+	vtrans = ft_vec3norm(vtrans);
+	vtrans = ft_vec3scalar(vtrans, bone->vsize.v[0]);
+	*vlpos = ft_vec3add(*vlpos, vtrans));
+	
+	return ;
 }
 
 void	ft_drawhumanlist(t_ogl *o, t_env *e, t_vec3 vlrot, t_vec3 vlpos, t_list *l)
@@ -131,7 +108,7 @@ void	ft_drawhumanlist(t_ogl *o, t_env *e, t_vec3 vlrot, t_vec3 vlpos, t_list *l)
 	{
 		if (ltmp->content_size == sizeof(t_bone))
 		{
-			mbone = ft_mat4boneset(&vlrot, &vlpos, &(*((t_bone*)ltmp->content)));
+			ft_mat4boneset(&mbone, &vlrot, &vlpos, &(*((t_bone*)ltmp->content)));
 			ft_setpvmmatrices(e->cam, &(o->shaderprogramid), mbone);
 			glUseProgram(o->shaderprogramid);
 			glActiveTexture(GL_TEXTURE0);
@@ -139,6 +116,11 @@ void	ft_drawhumanlist(t_ogl *o, t_env *e, t_vec3 vlrot, t_vec3 vlpos, t_list *l)
 			glUniform1i(o->textureid, 0);
 			glUniform1f(o->texturealphaid, e->obj.texturealpha);
 			ft_drawvertexbuffer(e->obj.fcount);
+			ft_putendl("vlrot");
+			ft_vec3print(vlrot);
+			ft_putendl("vlpos");
+			ft_vec3print(vlpos);
+			ft_printbone(*((t_bone*)ltmp->content), 0);
 		}
 		else
 			ft_drawhumanlist(o, e, vlrot, vlpos, (t_list*)ltmp->content);
@@ -162,7 +144,7 @@ void	ft_drawhuman(t_ogl *o, t_env *e)
 	ft_processinput(o->window);
 	ft_updatecamera(&(e->cam));
 	ft_drawhumanlist(o, e, vlrot, vlpos, e->lhuman);
-	ft_printhumanlist(e->lhuman);
+//	ft_printhumanlist(e->lhuman);
 	glfwSwapBuffers(o->window);
 	glfwPollEvents();
 	return ;

@@ -22,8 +22,8 @@ t_mat4	ft_setmat4rotx(float theta)
 
 	ft_mat4set(&mat, IDENTITY);
 	mat.m[5] = cos(theta);
-	mat.m[6] = sin(theta);
-	mat.m[9] = -sin(theta);
+	mat.m[6] = -sin(theta);
+	mat.m[9] = sin(theta);
 	mat.m[10] = cos(theta);
 	return (mat);
 }
@@ -38,8 +38,8 @@ t_mat4	ft_setmat4roty(float theta)
 
 	ft_mat4set(&mat, IDENTITY);
 	mat.m[0] = cos(theta);
-	mat.m[2] = -sin(theta);
-	mat.m[8] = sin(theta);
+	mat.m[2] = sin(theta);
+	mat.m[8] = -sin(theta);
 	mat.m[10] = cos(theta);
 	return (mat);
 }
@@ -54,8 +54,8 @@ t_mat4	ft_setmat4rotz(float theta)
 
 	ft_mat4set(&mat, IDENTITY);
 	mat.m[0] = cos(theta);
-	mat.m[1] = sin(theta);
-	mat.m[4] = -sin(theta);
+	mat.m[1] = -sin(theta);
+	mat.m[4] = sin(theta);
 	mat.m[5] = cos(theta);
 	return (mat);
 }

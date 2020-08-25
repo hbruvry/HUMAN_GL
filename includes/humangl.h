@@ -115,6 +115,7 @@ char			**ft_filecpytab(char *path);
 int				ft_setshaderprogram(GLuint *shaderprogramid);
 int				ft_setbmptexture(GLuint *texturebuffer);
 void			ft_lfill(t_list **alst, void const *c, size_t cs);
+void			ft_printbone(t_bone b, int tablength);
 void			ft_printhumanlist(t_list *l);
 void			ft_sethumanlist(t_list **lhuman);
 void			ft_translatevertexbufferdata(GLfloat *vertexbufferdata, int vcount, t_vec3 vtrans);

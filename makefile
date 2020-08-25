@@ -24,6 +24,7 @@ SRCS =		sources/main.c \
 			sources/ft_updatecamera.c \
 			sources/ft_setpvmmatrices.c \
 			sources/ft_lfill.c \
+			sources/ft_printbone.c \
 			sources/ft_printhumanlist.c \
 			sources/ft_sethumanlist.c \
 			sources/ft_settexture.c \
